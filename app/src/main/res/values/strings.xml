@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">Ex21051</string>
+    <string-array name="categories">
+        <item>Choose a category</item>
+        <item>Housing</item>
+        <item>Groceries</item>
+        <item>Dining-Out</item>
+        <item>Entertainment</item>
+        <item>Shopping</item>
+        <item>Travel</item>
+        <item>Health</item>
+    </string-array>
+
+    <string-array name="months">
+        <item>Choose a month</item>
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
 </resources>
