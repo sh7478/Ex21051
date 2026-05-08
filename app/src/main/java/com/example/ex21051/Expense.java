@@ -3,11 +3,11 @@ package com.example.ex21051;
 public class Expense {
     private String name;
     private String description;
-    private int amount;
+    private double amount;
     private String category;
     private String date;
 
-    public Expense(String name, String description, int amount, String category, String date)
+    public Expense(String name, String description, double amount, String category, String date)
     {
         this.name = name;
         this.description = description;
@@ -35,11 +35,11 @@ public class Expense {
         this.description = description;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

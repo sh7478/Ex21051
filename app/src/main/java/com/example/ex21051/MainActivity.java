@@ -1,5 +1,7 @@
 package com.example.ex21051;
 
+import static com.example.ex21051.FBref.refExpenses;
+
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -113,8 +115,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         else
         {
-            //TODO: add to FB
-
+            String name = nameEt.getText().toString();
+            String description = eTDesc.getText().toString();
+            double amount = Double.parseDouble(eTPrice.getText().toString());
+            String date = dateInputEt.getText().toString();
+            date = date.replaceAll("/", "");
+            Expense expense = new Expense(name, description, amount, category, date);
+            refExpenses.child(date).setValue(expense);
             nameEt.setText("");
             eTDesc.setText("");
             eTPrice.setText("");
