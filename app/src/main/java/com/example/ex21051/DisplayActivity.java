@@ -38,11 +38,13 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
     ListView lv;
     Spinner monthSpin;
     TextView totalMonthTv, descTv;
+    ArrayAdapter<String> lvAdp;
     EditText eTDescSearch;
     ValueEventListener VEL;
     int selectedMonthToSum;
     ArrayList<String> expenseList = new ArrayList<String>();
     ArrayList<Expense> expenseValues = new ArrayList<Expense>();
+    ArrayList<String> keyList = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,14 +62,15 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
                 expenseValues.clear();
                 for(DataSnapshot data : snapshot.getChildren()){
                     String str1 = (String) data.getKey();
+                    keyList.add(str1);
                     Expense expenseTmp = data.getValue(Expense.class);
                     expenseValues.add(expenseTmp);
                     String str2 = expenseTmp.getName();
                     String str3 = expenseTmp.getAmount() + "";
                     expenseList.add(str1 + " " + str2 + " " + str3);
                 }
-                ArrayAdapter<String> adp = new ArrayAdapter<String>(DisplayActivity.this, android.R.layout.simple_spinner_dropdown_item, expenseList);
-                lv.setAdapter(adp);
+                lvAdp = new ArrayAdapter<String>(DisplayActivity.this, android.R.layout.simple_spinner_dropdown_item, expenseList);
+                lv.setAdapter(lvAdp);
             }
 
             @Override
@@ -155,10 +158,17 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
 
     public boolean onContextItemSelected(MenuItem item){
         String func = item.getTitle().toString();
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int position = info.position;
         if(func.contains("delete"))
         {
+            String key = keyList.get(position);
+            refExpenses.child(key).removeValue();
+            expenseList.remove(position);
+            expenseValues.remove(position);
+            keyList.remove(position);
+            lvAdp.notifyDataSetChanged();
             //TODO: add delete functions
-            //refExpenses.child().removeValue();
         }
         else
         {
