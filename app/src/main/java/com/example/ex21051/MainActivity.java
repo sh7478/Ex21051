@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     EditText nameEt, eTDesc, eTPrice, dateInputEt;
     int selectedYear, selectedMonth, selectedDay;
     boolean dateSelected = false;
-    boolean update = false;
     Intent gi;
 
     /**
@@ -61,9 +60,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 showDatePicker();
             }
         });
-        try{
-            update = true;
-            gi = getIntent();
+        gi = getIntent();
+        if(gi.hasExtra("name"))
+        {
             nameEt.setText(gi.getStringExtra("name"));
             eTDesc.setText(gi.getStringExtra("description"));
             double amount = gi.getDoubleExtra("amount", -1);
@@ -72,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 eTPrice.setText(amount +"");
             }
             String categoryGi = gi.getStringExtra("category");
-            for(int i = 0; i < 8; i++)
+            for(int i = 0; i < categories.length; i++)
             {
                 if(categories[i].equals(categoryGi))
                 {
@@ -83,11 +82,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             date = date.replaceAll("-", "/");
             dateInputEt.setText(date);
             dateSelected = true;
-        }
-        catch(Exception e)
-        {
-            Log.e("Intent : ", e.getCause() + "");
-            update = false;
         }
     }
 
@@ -255,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             AlertDialog ad = adb.create();
             ad.show();
         }
-        else if(update)
+        else if(gi.hasExtra("name"))
         {
             String name = nameEt.getText().toString();
             String description = eTDesc.getText().toString();
@@ -277,8 +271,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             double amount = Double.parseDouble(eTPrice.getText().toString());
             String date = dateInputEt.getText().toString();
             date = date.replaceAll("/", "-");
-            Expense expense = new Expense(name, description, amount, category, date);
-            refExpenses.child(date).setValue(expense);
+            String dateSave = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay);
+            Expense expense = new Expense(name, description, amount, category, dateSave);
+            refExpenses.push().setValue(expense);
             nameEt.setText("");
             eTDesc.setText("");
             eTPrice.setText("");

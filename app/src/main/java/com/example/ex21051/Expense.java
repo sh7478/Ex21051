@@ -147,7 +147,9 @@ public class Expense {
      */
     @Override
     public String toString() {
-        return amount + "₪ | " + name + "\n" + date;
+        String[] parts = date.split("-");
+        String displayDate = parts[2] + "/" + parts[1] + "/" + parts[0];
+        return amount + "₪ | " + name + "\n" + displayDate;
     }
 
     /**
@@ -157,15 +159,9 @@ public class Expense {
      * @param month The month index (0-based) to match.
      * @return true if the month matches, false otherwise.
      */
-    public boolean monthMatch(int month)
-    {
-        int index = date.indexOf("-");
-        String subDate = date.substring(index + 1);
-        int index2 = subDate.indexOf("-");
-        if(month == Integer.parseInt(date.substring(index + 1, index2 + 1 + index)))
-        {
-            return true;
-        }
-        return false;
+    public boolean monthMatch(int month) {
+        String[] parts = date.split("-");
+        int m = Integer.parseInt(parts[1]);
+        return m == month;
     }
 }
