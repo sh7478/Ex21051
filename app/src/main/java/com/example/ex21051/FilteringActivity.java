@@ -1,9 +1,14 @@
 package com.example.ex21051;
 
+import static com.example.ex21051.FBref.refExpenses;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -12,10 +17,19 @@ import android.widget.Switch;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class FilteringActivity extends AppCompatActivity {
 
@@ -67,5 +81,71 @@ public class FilteringActivity extends AppCompatActivity {
             eTMaxPrice.setText("");
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void filter(View view) {
+        if(!priceCatSwitch.isChecked())
+        {
+            if(eTMinPrice.getText().toString().isEmpty() || eTMaxPrice.getText().toString().isEmpty())
+            {
+                AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                adb.setTitle("Error");
+                adb.setMessage("Please fill all the fields before filtering");
+                adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog ad = adb.create();
+                ad.show();
+            }
+            else
+            {
+                double max = Double.parseDouble(eTMaxPrice.getText().toString());
+                double min = Double.parseDouble(eTMinPrice.getText().toString());
+                Query query = refExpenses.orderByChild("amount").startAt(min).endAt(max);
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        ArrayList<Expense> expenseList = new ArrayList<>();
+                        for(DataSnapshot data : snapshot.getChildren())
+                        {
+                            Expense expense = data.getValue(Expense.class);
+                            expenseList.add(expense);
+                        }
+                        ArrayAdapter<Expense> adp = new ArrayAdapter<Expense>(FilteringActivity.this, android.R.layout.simple_spinner_dropdown_item, expenseList);
+                        filteringLv.setAdapter(adp);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("realtime database", error.toString());
+                    }
+                });
+            }
+        }
+        else
+        {
+            //TODO: filter by the category
+        }
+    }
+
+    public void switchMod(View view) {
+        if(priceCatSwitch.isChecked())
+        {
+            filterSpinCat.setVisibility(View.VISIBLE);
+            filterSpinCat.setSelection(0);
+            eTMaxPrice.setVisibility(View.INVISIBLE);
+            eTMinPrice.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            filterSpinCat.setVisibility(View.INVISIBLE);
+            eTMaxPrice.setVisibility(View.VISIBLE);
+            eTMinPrice.setVisibility(View.VISIBLE);
+            eTMinPrice.setText("");
+            eTMaxPrice.setText("");
+        }
     }
 }

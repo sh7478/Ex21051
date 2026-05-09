@@ -29,6 +29,7 @@
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="15"
+            android:onClick="switchMod"
             android:text="Price/Category" />
 
         <Space
@@ -46,7 +47,8 @@
                 android:id="@+id/filterSpinCat"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="30" />
+                android:layout_weight="30"
+                android:visibility="invisible" />
 
             <Space
                 android:layout_width="0dp"
@@ -81,6 +83,18 @@
                 android:hint="max"
                 android:inputType="numberDecimal" />
         </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="filter"
+            android:text="Filter" />
 
         <Space
             android:layout_width="match_parent"
