@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -31,17 +32,22 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class FilteringActivity extends AppCompatActivity {
+public class FilteringActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     Switch priceCatSwitch;
     Spinner filterSpinCat;
     EditText eTMinPrice, eTMaxPrice;
     ListView filteringLv;
+    String [] categories;
+    String category = "";
+    Query query;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtering);
         connectJavaXml();
+        fillSpinner();
     }
 
     private void connectJavaXml() {
@@ -53,6 +59,7 @@ public class FilteringActivity extends AppCompatActivity {
         filteringLv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         ArrayAdapter<String> adp = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
         filteringLv.setAdapter(adp);
+        filterSpinCat.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -104,30 +111,31 @@ public class FilteringActivity extends AppCompatActivity {
             {
                 double max = Double.parseDouble(eTMaxPrice.getText().toString());
                 double min = Double.parseDouble(eTMinPrice.getText().toString());
-                Query query = refExpenses.orderByChild("amount").startAt(min).endAt(max);
-                query.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        ArrayList<Expense> expenseList = new ArrayList<>();
-                        for(DataSnapshot data : snapshot.getChildren())
-                        {
-                            Expense expense = data.getValue(Expense.class);
-                            expenseList.add(expense);
-                        }
-                        ArrayAdapter<Expense> adp = new ArrayAdapter<Expense>(FilteringActivity.this, android.R.layout.simple_spinner_dropdown_item, expenseList);
-                        filteringLv.setAdapter(adp);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Log.e("realtime database", error.toString());
-                    }
-                });
+                query = refExpenses.orderByChild("amount").startAt(min).endAt(max);
+                setListenerToQuery();
             }
         }
         else
         {
-            //TODO: filter by the category
+            if(category.isEmpty())
+            {
+                AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                adb.setTitle("Error");
+                adb.setMessage("Please select a category before filtering");
+                adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog ad = adb.create();
+                ad.show();
+            }
+            else
+            {
+                query = refExpenses.orderByChild("category").equalTo(category);
+                setListenerToQuery();
+            }
         }
     }
 
@@ -147,5 +155,48 @@ public class FilteringActivity extends AppCompatActivity {
             eTMinPrice.setText("");
             eTMaxPrice.setText("");
         }
+    }
+
+    private void fillSpinner() {
+        categories = getResources().getStringArray(R.array.categories);
+        ArrayAdapter<String> adp = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item, categories);
+        filterSpinCat.setAdapter(adp);
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if(i != 0) {
+            category = categories[i];
+            Log.i("Spinner", "category selected is -> " + category);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        Log.i("Spinner", "Nothing selected");
+    }
+
+    public void setListenerToQuery()
+    {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Expense> expenseList = new ArrayList<>();
+                for(DataSnapshot data : snapshot.getChildren())
+                {
+                    Expense expense = data.getValue(Expense.class);
+                    expenseList.add(expense);
+                }
+                ArrayAdapter<Expense> adp = new ArrayAdapter<Expense>(FilteringActivity.this, android.R.layout.simple_spinner_dropdown_item, expenseList);
+                filteringLv.setAdapter(adp);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("realtime database", error.toString());
+            }
+        });
     }
 }
