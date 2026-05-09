@@ -2,6 +2,7 @@ package com.example.ex21051;
 
 import static com.example.ex21051.FBref.refExpenses;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -41,11 +43,13 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
     TextView totalMonthTv, descTv;
     ArrayAdapter<String> lvAdp;
     EditText eTDescSearch;
+    String key;
     ValueEventListener VEL;
     int selectedMonthToSum;
     ArrayList<String> expenseList = new ArrayList<String>();
     ArrayList<Expense> expenseValues = new ArrayList<Expense>();
     ArrayList<String> keyList = new ArrayList<String>();
+    int REQUEST_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,7 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 expenseList.clear();
                 expenseValues.clear();
+                keyList.clear();
                 for(DataSnapshot data : snapshot.getChildren()){
                     String str1 = (String) data.getKey();
                     keyList.add(str1);
@@ -180,7 +185,7 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         String func = item.getTitle().toString();
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int position = info.position;
-        String key = keyList.get(position);
+        key = keyList.get(position);
         if(func.contains("delete"))
         {
             refExpenses.child(key).removeValue();
@@ -191,7 +196,14 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         }
         else
         {
-            //TODO: add update functions
+            Intent si = new Intent(this, MainActivity.class);
+            Expense expense = expenseValues.get(position);
+            si.putExtra("name", expense.getName());
+            si.putExtra("description", expense.getDescription());
+            si.putExtra("amount", expense.getAmount());
+            si.putExtra("category", expense.getCategory());
+            si.putExtra("date", expense.getDate());
+            startActivityForResult(si, REQUEST_CODE);
         }
         return super.onContextItemSelected(item);
     }
@@ -229,5 +241,28 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         totalMonthTv.setText("you need to select a month in order to see the month's total expenses");
+    }
+
+    @Override
+    protected void onActivityResult(int source, int result, @Nullable Intent data_back)
+    {
+        super.onActivityResult(source, result, data_back);
+        if(source == REQUEST_CODE)
+        {
+            if(Activity.RESULT_OK == result)
+            {
+                if(data_back != null)
+                {
+                    String name = data_back.getStringExtra("name");
+                    String description = data_back.getStringExtra("description");
+                    double amount = data_back.getDoubleExtra("amount", -1);
+                    String category = data_back.getStringExtra("category");
+                    String date = data_back.getStringExtra("date");
+                    Expense expense = new Expense(name, description, amount, category, date);
+                    refExpenses.child(key).setValue(expense);
+                    readDataFromDb();
+                }
+            }
+        }
     }
 }

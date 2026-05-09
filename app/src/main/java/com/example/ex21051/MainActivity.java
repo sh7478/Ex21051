@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     EditText nameEt, eTDesc, eTPrice, dateInputEt;
     int selectedYear, selectedMonth, selectedDay;
     boolean dateSelected = false;
+    boolean update = false;
+    Intent gi;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,34 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 showDatePicker();
             }
         });
+        try{
+            update = true;
+            gi = getIntent();
+            nameEt.setText(gi.getStringExtra("name"));
+            eTDesc.setText(gi.getStringExtra("description"));
+            double amount = gi.getDoubleExtra("amount", -1);
+            if(amount != -1)
+            {
+                eTPrice.setText(amount +"");
+            }
+            String categoryGi = gi.getStringExtra("category");
+            for(int i = 0; i < 8; i++)
+            {
+                if(categories[i].equals(categoryGi))
+                {
+                    catSpin.setSelection(i);
+                }
+            }
+            String date = gi.getStringExtra("date");
+            date = date.replaceAll("-", "/");
+            dateInputEt.setText(date);
+            dateSelected = true;
+        }
+        catch(Exception e)
+        {
+            Log.e("Intent : ", e.getCause() + "");
+            update = false;
+        }
     }
 
     private void fillSpinner() {
@@ -149,6 +179,35 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             });
             AlertDialog ad = adb.create();
             ad.show();
+        }
+        else if(Double.parseDouble(eTPrice.getText().toString()) <= 0)
+        {
+            AlertDialog.Builder adb = new AlertDialog.Builder(this);
+            adb.setTitle("Error");
+            adb.setMessage("The amount of the expense should be higher then 0");
+            adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            AlertDialog ad = adb.create();
+            ad.show();
+        }
+        else if(update)
+        {
+            String name = nameEt.getText().toString();
+            String description = eTDesc.getText().toString();
+            double amount = Double.parseDouble(eTPrice.getText().toString());
+            String date = dateInputEt.getText().toString();
+            date = date.replaceAll("/", "-");
+            gi.putExtra("name", name);
+            gi.putExtra("description", description);
+            gi.putExtra("amount", amount);
+            gi.putExtra("category", category);
+            gi.putExtra("date", date);
+            setResult(RESULT_OK, gi);
+            finish();
         }
         else
         {
