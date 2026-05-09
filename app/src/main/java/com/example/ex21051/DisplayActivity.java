@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DisplayActivity extends AppCompatActivity implements View.OnCreateContextMenuListener, AdapterView.OnItemSelectedListener{
@@ -40,18 +41,42 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
     EditText eTDescSearch;
     ValueEventListener VEL;
     int selectedMonthToSum;
+    ArrayList<String> expenseList = new ArrayList<String>();
+    ArrayList<Expense> expenseValues = new ArrayList<Expense>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
         connectJavaXml();
         configureVEL();
-        fillSpinner();
+        readDataFromDb();
     }
 
-    private void fillSpinner() {
+    private void readDataFromDb() {
+        refExpenses.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                expenseList.clear();
+                expenseValues.clear();
+                for(DataSnapshot data : snapshot.getChildren()){
+                    String str1 = (String) data.getKey();
+                    Expense expenseTmp = data.getValue(Expense.class);
+                    expenseValues.add(expenseTmp);
+                    String str2 = expenseTmp.getName();
+                    String str3 = expenseTmp.getAmount() + "";
+                    expenseList.add(str1 + " " + str2 + " " + str3);
+                }
+                ArrayAdapter<String> adp = new ArrayAdapter<String>(DisplayActivity.this, android.R.layout.simple_spinner_dropdown_item, expenseList);
+                lv.setAdapter(adp);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("realtime database : ", error.toString());
+            }
+        });
     }
+
 
     private void configureVEL() {
         VEL = new ValueEventListener() {

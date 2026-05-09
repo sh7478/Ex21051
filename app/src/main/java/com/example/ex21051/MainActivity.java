@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             String description = eTDesc.getText().toString();
             double amount = Double.parseDouble(eTPrice.getText().toString());
             String date = dateInputEt.getText().toString();
-            date = date.replaceAll("/", "");
+            date = date.replaceAll("/", "-");
             Expense expense = new Expense(name, description, amount, category, date);
             refExpenses.child(date).setValue(expense);
             nameEt.setText("");
