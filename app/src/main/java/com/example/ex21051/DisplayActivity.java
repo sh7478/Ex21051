@@ -160,15 +160,14 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         String func = item.getTitle().toString();
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int position = info.position;
+        String key = keyList.get(position);
         if(func.contains("delete"))
         {
-            String key = keyList.get(position);
             refExpenses.child(key).removeValue();
             expenseList.remove(position);
             expenseValues.remove(position);
             keyList.remove(position);
             lvAdp.notifyDataSetChanged();
-            //TODO: add delete functions
         }
         else
         {
