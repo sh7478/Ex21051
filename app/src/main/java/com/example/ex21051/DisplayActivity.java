@@ -57,8 +57,18 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         VEL = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Expense expense = snapshot.getValue(Expense.class);
-                descTv.setText(expense.getName() + "\n" + expense.getDescription() + "\n" + expense.getDate() + "\n" + expense.getCategory() + "\n" + expense.getAmount() + "₪");
+                String str = "";
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    Expense expense = data.getValue(Expense.class);
+                    if (expense != null) {
+                        str += "Name: " + expense.getName() +  ", Amount: " + expense.getAmount() + "\nCategory: " + expense.getCategory() + "\n";
+                    }
+                }
+                if (str.isEmpty()) {
+                    descTv.setText("No results found");
+                } else {
+                    descTv.setText(str);
+                }
             }
 
             @Override
