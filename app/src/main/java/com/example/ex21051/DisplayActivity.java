@@ -32,19 +32,25 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-public class DisplayActivity extends AppCompatActivity implements View.OnCreateContextMenuListener{
+public class DisplayActivity extends AppCompatActivity implements View.OnCreateContextMenuListener, AdapterView.OnItemSelectedListener{
 
     ListView lv;
     Spinner monthSpin;
     TextView totalMonthTv, descTv;
     EditText eTDescSearch;
     ValueEventListener VEL;
+    int selectedMonthToSum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
         connectJavaXml();
         configureVEL();
+        fillSpinner();
+    }
+
+    private void fillSpinner() {
+
     }
 
     private void configureVEL() {
@@ -72,6 +78,11 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         registerForContextMenu(lv);
         ArrayAdapter<String> adp = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
         lv.setAdapter(adp);
+        String[] months = getResources().getStringArray(R.array.months);
+        monthSpin.setOnItemSelectedListener(this);
+        ArrayAdapter<String> adpSpin = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item, months);
+        monthSpin.setAdapter(adpSpin);
     }
 
     public void searchDesc(View view) {
@@ -144,5 +155,15 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
             startActivity(it);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        selectedMonthToSum = i;
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        totalMonthTv.setText("you need to select a month in order to see the month's total expenses");
     }
 }
