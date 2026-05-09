@@ -2,119 +2,104 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="16dp"
     tools:context=".FilteringActivity">
-
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="5" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="90"
-        android:orientation="vertical">
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginEnd="16dp">
 
-        <Space
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5" />
+            android:layout_height="wrap_content"
+            android:text="Filtered Results"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingBottom="8dp" />
+
+        <ListView
+            android:id="@+id/filteringLv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#EEEEEE" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Filter Options"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
         <Switch
             android:id="@+id/priceCatSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="15"
-            android:onClick="switchMod"
-            android:text="Price/Category" />
-
-        <Space
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10" />
+            android:layout_height="wrap_content"
+            android:onClick="switchMod"
+            android:text="Filter by Category"
+            android:layout_marginBottom="16dp" />
+
+        <Spinner
+            android:id="@+id/filterSpinCat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:visibility="invisible" />
 
         <LinearLayout
+            android:id="@+id/priceRangeLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="25"
-            android:orientation="horizontal">
-
-            <Spinner
-                android:id="@+id/filterSpinCat"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="30"
-                android:visibility="invisible" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="5" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
 
             <EditText
                 android:id="@+id/eTMinPrice"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="15"
-                android:ems="10"
-                android:hint="min"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Min"
                 android:inputType="numberDecimal" />
 
             <TextView
-                android:id="@+id/textView2"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="5"
-                android:gravity="center"
-                android:text="-"
-                android:textSize="96sp" />
+                android:text=" - "
+                android:padding="4dp" />
 
             <EditText
                 android:id="@+id/eTMaxPrice"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="15"
-                android:ems="10"
-                android:hint="max"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Max"
                 android:inputType="numberDecimal" />
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="filter"
-            android:text="Filter" />
+            android:text="Apply Filter" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10" />
-
-        <ListView
-            android:id="@+id/filteringLv"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="50" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5" />
     </LinearLayout>
 
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="5" />
 </LinearLayout>

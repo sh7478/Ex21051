@@ -98,7 +98,7 @@ public class SortingActivity extends AppCompatActivity {
                 if(ascDescSwitch.isChecked()) {
                     Collections.reverse(expenseList);
                 }
-                ArrayAdapter<Expense> adp = new ArrayAdapter<Expense>(SortingActivity.this, android.R.layout.simple_spinner_dropdown_item, expenseList);
+                ArrayAdapter<Expense> adp = new ArrayAdapter<Expense>(SortingActivity.this, android.R.layout.simple_list_item_1, expenseList);
                 sortingLv.setAdapter(adp);
             }
 

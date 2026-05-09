@@ -41,7 +41,6 @@ public class FilteringActivity extends AppCompatActivity implements AdapterView.
     String [] categories;
     String category = "";
     Query query;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +56,7 @@ public class FilteringActivity extends AppCompatActivity implements AdapterView.
         eTMaxPrice = findViewById(R.id.eTMaxPrice);
         filteringLv = findViewById(R.id.filteringLv);
         filteringLv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        ArrayAdapter<String> adp = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<Expense> adp = new ArrayAdapter<Expense>(FilteringActivity.this, android.R.layout.simple_list_item_1);
         filteringLv.setAdapter(adp);
         filterSpinCat.setOnItemSelectedListener(this);
     }
@@ -189,7 +188,7 @@ public class FilteringActivity extends AppCompatActivity implements AdapterView.
                     Expense expense = data.getValue(Expense.class);
                     expenseList.add(expense);
                 }
-                ArrayAdapter<Expense> adp = new ArrayAdapter<Expense>(FilteringActivity.this, android.R.layout.simple_spinner_dropdown_item, expenseList);
+                ArrayAdapter<Expense> adp = new ArrayAdapter<Expense>(FilteringActivity.this, android.R.layout.simple_list_item_1, expenseList);
                 filteringLv.setAdapter(adp);
             }
 

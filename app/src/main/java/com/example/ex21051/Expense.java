@@ -59,8 +59,21 @@ public class Expense {
         this.date = date;
     }
 
+
     @Override
     public String toString() {
-        return name + " | " + amount + "₪ | " + date;
+        return amount + "₪ | " + name + "\n" + date;
+    }
+
+    public boolean monthMatch(int month)
+    {
+        int index = date.indexOf("-");
+        String subDate = date.substring(index + 1);
+        int index2 = subDate.indexOf("-");
+        if(month == Integer.parseInt(date.substring(index + 1, index2 + 1 + index)))
+        {
+            return true;
+        }
+        return false;
     }
 }

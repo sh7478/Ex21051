@@ -31,6 +31,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DisplayActivity extends AppCompatActivity implements View.OnCreateContextMenuListener, AdapterView.OnItemSelectedListener{
@@ -45,6 +46,7 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
     ArrayList<String> expenseList = new ArrayList<String>();
     ArrayList<Expense> expenseValues = new ArrayList<Expense>();
     ArrayList<String> keyList = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,11 +67,10 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
                     keyList.add(str1);
                     Expense expenseTmp = data.getValue(Expense.class);
                     expenseValues.add(expenseTmp);
-                    String str2 = expenseTmp.getName();
-                    String str3 = expenseTmp.getAmount() + "";
-                    expenseList.add(str1 + " " + str2 + " " + str3);
+                    String str = expenseTmp.toString();
+                    expenseList.add(str);
                 }
-                lvAdp = new ArrayAdapter<String>(DisplayActivity.this, android.R.layout.simple_spinner_dropdown_item, expenseList);
+                lvAdp = new ArrayAdapter<String>(DisplayActivity.this, android.R.layout.simple_list_item_1, expenseList);
                 lv.setAdapter(lvAdp);
             }
 
@@ -114,7 +115,7 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         eTDescSearch = findViewById(R.id.eTDescSearch);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         registerForContextMenu(lv);
-        ArrayAdapter<String> adp = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adp = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         lv.setAdapter(adp);
         String[] months = getResources().getStringArray(R.array.months);
         monthSpin.setOnItemSelectedListener(this);
@@ -147,7 +148,26 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
     }
 
     public void calcTotal(View view) {
-        //TODO: calc the sum of all the expenses at a specific month
+        Query query = refExpenses.orderByChild("date");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                double sum = 0;
+                for(DataSnapshot data : snapshot.getChildren())
+                {
+                    Expense expense = data.getValue(Expense.class);
+                    if(expense.monthMatch(selectedMonthToSum)) {
+                        sum += expense.getAmount();
+                    }
+                }
+                totalMonthTv.setText("The total sum of the selected month is --> " + sum);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("realtime database", error.toString());
+            }
+        });
     }
 
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){

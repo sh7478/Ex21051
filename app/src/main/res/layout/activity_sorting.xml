@@ -2,79 +2,74 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="16dp"
     tools:context=".SortingActivity">
-
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="5" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="90"
-        android:orientation="vertical">
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginEnd="16dp">
 
-        <Space
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5" />
+            android:layout_height="wrap_content"
+            android:text="Sorted List"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingBottom="8dp" />
+
+        <ListView
+            android:id="@+id/sortingLv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#EEEEEE" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="16dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sorting Options"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
         <Switch
             android:id="@+id/datePriceSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="10"
-            android:text="Date/Price" />
-
-        <Space
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Sort by Date/Price" />
 
         <Switch
             android:id="@+id/ascDescSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="10"
-            android:text="Ascending/Descending" />
-
-        <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="10" />
+            android:text="Reverse Order"
+            android:layout_marginBottom="32dp" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="sort"
-            android:text="sort" />
+            android:text="Apply Sorting" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10" />
-
-        <ListView
-            android:id="@+id/sortingLv"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="50" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5" />
     </LinearLayout>
 
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="5" />
 </LinearLayout>
