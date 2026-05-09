@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -35,6 +36,9 @@ public class FilteringActivity extends AppCompatActivity {
         eTMinPrice = findViewById(R.id.eTMinPrice);
         eTMaxPrice = findViewById(R.id.eTMaxPrice);
         filteringLv = findViewById(R.id.filteringLv);
+        filteringLv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        ArrayAdapter<String> adp = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
+        filteringLv.setAdapter(adp);
     }
 
     @Override

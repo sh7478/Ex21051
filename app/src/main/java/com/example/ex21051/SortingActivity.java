@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Switch;
 
@@ -31,6 +32,9 @@ public class SortingActivity extends AppCompatActivity {
         datePriceSwitch = findViewById(R.id.datePriceSwitch);
         ascDescSwitch = findViewById(R.id.ascDescSwitch);
         sortingLv = findViewById(R.id.sortingLv);
+        sortingLv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        ArrayAdapter<String> adp = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
+        sortingLv.setAdapter(adp);
     }
 
     @Override
