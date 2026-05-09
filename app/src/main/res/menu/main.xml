@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuInpu"
+        android:orderInCategory="100"
+        android:title="Input" />
+    <item
+        android:id="@+id/menuExpens"
+        android:orderInCategory="200"
+        android:title="All Expenses" />
+    <item
+        android:id="@+id/menuSort"
+        android:orderInCategory="300"
+        android:title="Sort Expenses" />
+    <item
+        android:id="@+id/menuFilter"
+        android:orderInCategory="400"
+        android:title="Filter Expenses" />
+    <item
+        android:id="@+id/menuCred"
+        android:orderInCategory="500"
+        android:title="Credits" />
+</menu>

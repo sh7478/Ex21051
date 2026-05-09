@@ -12,14 +12,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class FilteringActivity extends AppCompatActivity {
+public class SortingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filtering);
+        setContentView(R.layout.activity_sorting);
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -37,10 +36,10 @@ public class FilteringActivity extends AppCompatActivity {
             Intent it = new Intent(this, DisplayActivity.class);
             startActivity(it);
         }else if(id == R.id.menuSort) {
-            Intent it = new Intent(this, SortingActivity.class);
-            startActivity(it);
+            //TODO: set switches to false
         }else if(id == R.id.menuFilter) {
-            //TODO: clear all edittexts set the spinner to 0 and set the switch to false
+            Intent it = new Intent(this, FilteringActivity.class);
+            startActivity(it);
         }
         return super.onOptionsItemSelected(item);
     }

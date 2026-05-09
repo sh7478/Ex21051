@@ -10,9 +10,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Ex21051">
+        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
         <activity
-            android:name=".CreditsActivty"
+            android:name=".SortingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FilteringActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DisplayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreditsActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

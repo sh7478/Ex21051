@@ -5,19 +5,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-public class FilteringActivity extends AppCompatActivity {
+public class CreditsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filtering);
+        setContentView(R.layout.activity_credits_activity);
     }
 
     @Override
@@ -40,7 +36,8 @@ public class FilteringActivity extends AppCompatActivity {
             Intent it = new Intent(this, SortingActivity.class);
             startActivity(it);
         }else if(id == R.id.menuFilter) {
-            //TODO: clear all edittexts set the spinner to 0 and set the switch to false
+            Intent it = new Intent(this, FilteringActivity.class);
+            startActivity(it);
         }
         return super.onOptionsItemSelected(item);
     }
