@@ -1,3 +1,9 @@
+/**
+ * @author shaked hazan shaked1246@gmail.com
+ * @version 1.0
+ * @since 9/05/2026
+ * Activity for filtering expenses by price range or category.
+ */
 package com.example.ex21051;
 
 import static com.example.ex21051.FBref.refExpenses;
@@ -41,6 +47,13 @@ public class FilteringActivity extends AppCompatActivity implements AdapterView.
     String [] categories;
     String category = "";
     Query query;
+
+    /**
+     * Initializes the activity and sets up UI elements.
+     * <p>
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +62,10 @@ public class FilteringActivity extends AppCompatActivity implements AdapterView.
         fillSpinner();
     }
 
+    /**
+     * Connects UI elements to Java variables and sets listeners.
+     * <p>
+     */
     private void connectJavaXml() {
         priceCatSwitch = findViewById(R.id.priceCatSwitch);
         filterSpinCat = findViewById(R.id.filterSpinCat);
@@ -61,6 +78,13 @@ public class FilteringActivity extends AppCompatActivity implements AdapterView.
         filterSpinCat.setOnItemSelectedListener(this);
     }
 
+    /**
+     * Inflates the options menu for the activity.
+     * <p>
+     *
+     * @param menu The options menu in which you place your items.
+     * @return boolean You must return true for the menu to be displayed; if you return false it will not be shown.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -68,6 +92,14 @@ public class FilteringActivity extends AppCompatActivity implements AdapterView.
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Handles navigation between activities from the options menu.
+     * <p>
+     *
+     * @param item The menu item that was selected.
+     * @return boolean Return false to allow normal menu processing to proceed, true to consume it here.
+     */
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
         if(id == R.id.menuInpu)
@@ -89,6 +121,12 @@ public class FilteringActivity extends AppCompatActivity implements AdapterView.
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Filters expenses based on the selected mode (price range or category).
+     * <p>
+     *
+     * @param view The view that was clicked.
+     */
     public void filter(View view) {
         if(!priceCatSwitch.isChecked())
         {
@@ -138,6 +176,12 @@ public class FilteringActivity extends AppCompatActivity implements AdapterView.
         }
     }
 
+    /**
+     * Switches the visibility of UI components based on the filtering mode.
+     * <p>
+     *
+     * @param view The view that was clicked (the switch).
+     */
     public void switchMod(View view) {
         if(priceCatSwitch.isChecked())
         {
@@ -156,6 +200,10 @@ public class FilteringActivity extends AppCompatActivity implements AdapterView.
         }
     }
 
+    /**
+     * Populates the category spinner with values from resources.
+     * <p>
+     */
     private void fillSpinner() {
         categories = getResources().getStringArray(R.array.categories);
         ArrayAdapter<String> adp = new ArrayAdapter<String>(this,
@@ -164,6 +212,15 @@ public class FilteringActivity extends AppCompatActivity implements AdapterView.
 
     }
 
+    /**
+     * Updates the selected category when a spinner item is selected.
+     * <p>
+     *
+     * @param adapterView The AdapterView where the selection happened.
+     * @param view The view within the AdapterView that was clicked.
+     * @param i The position of the view in the adapter.
+     * @param l The row id of the item that is selected.
+     */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if(i != 0) {
@@ -172,11 +229,21 @@ public class FilteringActivity extends AppCompatActivity implements AdapterView.
         }
     }
 
+    /**
+     * Handles cases where no category is selected in the spinner.
+     * <p>
+     *
+     * @param adapterView The AdapterView that now contains no selected item.
+     */
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         Log.i("Spinner", "Nothing selected");
     }
 
+    /**
+     * Adds a listener to the current query and updates the ListView with results.
+     * <p>
+     */
     public void setListenerToQuery()
     {
         query.addListenerForSingleValueEvent(new ValueEventListener() {

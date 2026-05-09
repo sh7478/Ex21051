@@ -1,3 +1,9 @@
+/**
+ * @author shaked hazan shaked1246@gmail.com
+ * @version 1.0
+ * @since 9/05/2026
+ * Activity to display, search, and manage (delete/update) expenses from Firebase.
+ */
 package com.example.ex21051;
 
 import static com.example.ex21051.FBref.refExpenses;
@@ -51,6 +57,12 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
     ArrayList<String> keyList = new ArrayList<String>();
     int REQUEST_CODE = 100;
 
+    /**
+     * Initializes the activity, sets the content view, and sets up UI connections and listeners.
+     * <p>
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +72,10 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         readDataFromDb();
     }
 
+    /**
+     * Reads all expense data from Firebase once and populates the ListView.
+     * <p>
+     */
     private void readDataFromDb() {
         refExpenses.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -86,7 +102,10 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         });
     }
 
-
+    /**
+     * Configures the ValueEventListener used for displaying search results in a TextView.
+     * <p>
+     */
     private void configureVEL() {
         VEL = new ValueEventListener() {
             @Override
@@ -112,6 +131,10 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         };
     }
 
+    /**
+     * Connects UI elements to Java variables and initializes adapters and listeners.
+     * <p>
+     */
     private void connectJavaXml() {
         lv = findViewById(R.id.lv);
         monthSpin = findViewById(R.id.monthSpin);
@@ -129,6 +152,12 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         monthSpin.setAdapter(adpSpin);
     }
 
+    /**
+     * Triggered by search button; performs a Firebase query to find expenses by description.
+     * <p>
+     *
+     * @param view The view that was clicked.
+     */
     public void searchDesc(View view) {
         if(eTDescSearch.getText().toString().isEmpty())
         {
@@ -152,6 +181,12 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         }
     }
 
+    /**
+     * Calculates and displays the total sum of expenses for the selected month.
+     * <p>
+     *
+     * @param view The view that was clicked.
+     */
     public void calcTotal(View view) {
         Query query = refExpenses.orderByChild("date");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -175,12 +210,27 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         });
     }
 
+    /**
+     * Creates the context menu for ListView items.
+     * <p>
+     *
+     * @param menu The context menu that is being built.
+     * @param v The view for which the context menu is being built.
+     * @param menuInfo Extra information about the item for which the context menu should be shown.
+     */
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.add("delete expense");
         menu.add("update expense");
     }
 
+    /**
+     * Handles selection of context menu items (delete or update).
+     * <p>
+     *
+     * @param item The context menu item that was selected.
+     * @return boolean Return false to allow normal context menu processing to proceed, true to consume it here.
+     */
     public boolean onContextItemSelected(MenuItem item){
         String func = item.getTitle().toString();
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -208,12 +258,26 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         return super.onContextItemSelected(item);
     }
 
+    /**
+     * Inflates the options menu for the activity.
+     * <p>
+     *
+     * @param menu The options menu in which you place your items.
+     * @return boolean You must return true for the menu to be displayed; if you return false it will not be shown.
+     */
     public boolean onCreateOptionsMenu(Menu menu)
     {
         getMenuInflater().inflate(R.menu.main,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Handles navigation between activities from the options menu.
+     * <p>
+     *
+     * @param item The menu item that was selected.
+     * @return boolean Return false to allow normal menu processing to proceed, true to consume it here.
+     */
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
         if(id == R.id.menuInpu)
@@ -233,16 +297,39 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Updates the selected month for sum calculation when a spinner item is selected.
+     * <p>
+     *
+     * @param adapterView The AdapterView where the selection happened.
+     * @param view The view within the AdapterView that was clicked.
+     * @param i The position of the view in the adapter.
+     * @param l The row id of the item that is selected.
+     */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         selectedMonthToSum = i;
     }
 
+    /**
+     * Handles cases where no month is selected in the spinner.
+     * <p>
+     *
+     * @param adapterView The AdapterView that now contains no selected item.
+     */
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         totalMonthTv.setText("you need to select a month in order to see the month's total expenses");
     }
 
+    /**
+     * Updates an expense in Firebase when returning from MainActivity (edit mode).
+     * <p>
+     *
+     * @param source The integer request code originally supplied to startActivityForResult(), allowing you to identify who this result came from.
+     * @param result The integer result code returned by the child activity through its setResult().
+     * @param data_back An Intent, which can return result data to the caller (various data can be attached to Intent "extras").
+     */
     @Override
     protected void onActivityResult(int source, int result, @Nullable Intent data_back)
     {

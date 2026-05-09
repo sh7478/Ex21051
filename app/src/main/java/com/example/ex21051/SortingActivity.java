@@ -1,3 +1,9 @@
+/**
+ * @author shaked hazan shaked1246@gmail.com
+ * @version 1.0
+ * @since 9/05/2026
+ * Activity to sort expenses by date or amount in ascending or descending order.
+ */
 package com.example.ex21051;
 
 import static com.example.ex21051.FBref.refExpenses;
@@ -34,6 +40,13 @@ public class SortingActivity extends AppCompatActivity {
     Switch datePriceSwitch, ascDescSwitch;
     ListView sortingLv;
     String key;
+
+    /**
+     * Initializes the activity, sets the content view, and connects UI elements.
+     * <p>
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,15 +54,26 @@ public class SortingActivity extends AppCompatActivity {
         connectJavaXml();
     }
 
+    /**
+     * Connects UI elements to Java variables and initializes the ListView adapter.
+     * <p>
+     */
     private void connectJavaXml() {
         datePriceSwitch = findViewById(R.id.datePriceSwitch);
         ascDescSwitch = findViewById(R.id.ascDescSwitch);
         sortingLv = findViewById(R.id.sortingLv);
         sortingLv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        ArrayAdapter<String> adp = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adp = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         sortingLv.setAdapter(adp);
     }
 
+    /**
+     * Inflates the options menu for the activity.
+     * <p>
+     *
+     * @param menu The options menu in which you place your items.
+     * @return boolean You must return true for the menu to be displayed; if you return false it will not be shown.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -57,6 +81,14 @@ public class SortingActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Handles navigation between activities from the options menu.
+     * <p>
+     *
+     * @param item The menu item that was selected.
+     * @return boolean Return false to allow normal menu processing to proceed, true to consume it here.
+     */
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
         if(id == R.id.menuInpu)
@@ -76,6 +108,12 @@ public class SortingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Performs sorting based on the selected criteria (date/amount) and order (asc/desc).
+     * <p>
+     *
+     * @param view The view that was clicked.
+     */
     public void sort(View view) {
         if(!datePriceSwitch.isChecked())
         {

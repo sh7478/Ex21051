@@ -1,3 +1,9 @@
+/**
+ * @author shaked hazan shaked1246@gmail.com
+ * @version 1.0
+ * @since 9/05/2026
+ * Main activity for adding or updating an expense in the Firebase database.
+ */
 package com.example.ex21051;
 
 import static com.example.ex21051.FBref.refExpenses;
@@ -35,6 +41,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     boolean dateSelected = false;
     boolean update = false;
     Intent gi;
+
+    /**
+     * Initializes the activity, sets up UI connections, and handles intent data for updates.
+     * <p>
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +91,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    /**
+     * Populates the category spinner with values from resources.
+     * <p>
+     */
     private void fillSpinner() {
         categories = getResources().getStringArray(R.array.categories);
         ArrayAdapter<String> adp = new ArrayAdapter<String>(this,
@@ -85,6 +102,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         catSpin.setAdapter(adp);
     }
 
+    /**
+     * Inflates the options menu for the activity.
+     * <p>
+     *
+     * @param menu The options menu in which you place your items.
+     * @return boolean You must return true for the menu to be displayed; if you return false it will not be shown.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -92,6 +116,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Handles navigation between activities from the options menu.
+     * <p>
+     *
+     * @param item The menu item that was selected.
+     * @return boolean Return false to allow normal menu processing to proceed, true to consume it here.
+     */
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
         if(id == R.id.menuInpu)
@@ -118,6 +150,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Updates the selected category when a spinner item is selected.
+     * <p>
+     *
+     * @param adapterView The AdapterView where the selection happened.
+     * @param view The view within the AdapterView that was clicked.
+     * @param i The position of the view in the adapter.
+     * @param l The row id of the item that is selected.
+     */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if(i != 0) {
@@ -126,11 +167,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    /**
+     * Handles cases where no category is selected in the spinner.
+     * <p>
+     *
+     * @param adapterView The AdapterView that now contains no selected item.
+     */
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         Log.i("Spinner", "Nothing selected");
     }
 
+    /**
+     * Shows a DatePickerDialog to allow the user to select an expense date.
+     * <p>
+     */
     private void showDatePicker() {
         Calendar c = Calendar.getInstance();
         int year, month, day;
@@ -158,6 +209,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         datePickerDialog.show();
     }
 
+    /**
+     * Connects UI elements to Java variables.
+     * <p>
+     */
     private void connectJavaXml() {
         nameEt = findViewById(R.id.nameEt);
         eTPrice = findViewById(R.id.eTPrice);
@@ -166,6 +221,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         catSpin = findViewById(R.id.catSpin);
     }
 
+    /**
+     * Adds a new expense to Firebase or returns updated data if in update mode.
+     * <p>
+     *
+     * @param view The view that was clicked.
+     */
     public void addToDb(View view) {
         if(eTDesc.getText().toString().isEmpty() || eTPrice.getText().toString().isEmpty()  || !dateSelected || category.isEmpty()) {
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
