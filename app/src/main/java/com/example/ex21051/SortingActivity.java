@@ -1,9 +1,12 @@
 package com.example.ex21051;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.Switch;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -14,11 +17,22 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class SortingActivity extends AppCompatActivity {
 
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    Switch datePriceSwitch, ascDescSwitch;
+    ListView sortingLv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sorting);
+        connectJavaXml();
     }
+
+    private void connectJavaXml() {
+        datePriceSwitch = findViewById(R.id.datePriceSwitch);
+        ascDescSwitch = findViewById(R.id.ascDescSwitch);
+        sortingLv = findViewById(R.id.sortingLv);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -36,7 +50,8 @@ public class SortingActivity extends AppCompatActivity {
             Intent it = new Intent(this, DisplayActivity.class);
             startActivity(it);
         }else if(id == R.id.menuSort) {
-            //TODO: set switches to false
+            datePriceSwitch.setChecked(false);
+            ascDescSwitch.setChecked(false);
         }else if(id == R.id.menuFilter) {
             Intent it = new Intent(this, FilteringActivity.class);
             startActivity(it);
