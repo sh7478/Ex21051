@@ -133,10 +133,10 @@ public class DisplayActivity extends AppCompatActivity implements View.OnCreateC
         {
             Intent it = new Intent(this, MainActivity.class);
             startActivity(it);
-        }/*else if(id == R.id.menuSort) {
+        }else if(id == R.id.menuSort) {
             Intent it = new Intent(this, SortingActivity.class);
             startActivity(it);
-        }*/else if(id == R.id.menuFilter) {
+        }else if(id == R.id.menuFilter) {
             Intent it = new Intent(this, FilteringActivity.class);
             startActivity(it);
         }else if(id == R.id.menuCred) {

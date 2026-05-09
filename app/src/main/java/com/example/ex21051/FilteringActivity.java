@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Switch;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -14,10 +18,23 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class FilteringActivity extends AppCompatActivity {
 
+    Switch priceCatSwitch;
+    Spinner filterSpinCat;
+    EditText eTMinPrice, eTMaxPrice;
+    ListView filteringLv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtering);
+        connectJavaXml();
+    }
+
+    private void connectJavaXml() {
+        priceCatSwitch = findViewById(R.id.priceCatSwitch);
+        filterSpinCat = findViewById(R.id.filterSpinCat);
+        eTMinPrice = findViewById(R.id.eTMinPrice);
+        eTMaxPrice = findViewById(R.id.eTMaxPrice);
+        filteringLv = findViewById(R.id.filteringLv);
     }
 
     @Override
@@ -40,7 +57,10 @@ public class FilteringActivity extends AppCompatActivity {
             Intent it = new Intent(this, SortingActivity.class);
             startActivity(it);
         }else if(id == R.id.menuFilter) {
-            //TODO: clear all edittexts set the spinner to 0 and set the switch to false
+            priceCatSwitch.setChecked(false);
+            filterSpinCat.setSelection(0);
+            eTMinPrice.setText("");
+            eTMaxPrice.setText("");
         }
         return super.onOptionsItemSelected(item);
     }
